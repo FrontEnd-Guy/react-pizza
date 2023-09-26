@@ -17,6 +17,7 @@ const Categories = () => {
       <ul>
         { categories.map((value, index) => (
           <li
+            key={index}
             className={`${activeIndex === index ? 'active' : ''}`}
             onClick={()=>setActiveIndex(index)}
           >{value}</li>

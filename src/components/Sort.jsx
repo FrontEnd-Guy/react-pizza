@@ -1,6 +1,15 @@
 import React from "react";
 
 const Sort = () => {
+  const [shown, setShown] = React.useState(false);
+  const [selected, setSelected] = React.useState(0);
+
+  const sortList = [
+    'популярности',
+    'цене',
+    'алфавиту'
+  ]
+
   return (
     <div className="sort">
       <div className="sort__label">
@@ -17,15 +26,19 @@ const Sort = () => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span>популярности</span>
+        <span onClick={() => setShown(!shown)}>{sortList[selected]}</span>
       </div>
-      <div className="sort__popup">
+      {shown && (<div className="sort__popup">
         <ul>
-          <li className="active">популярности</li>
-          <li>цене</li>
-          <li>алфавиту</li>
+          { sortList.map((item, index) => (
+            <li
+              key={index}
+              className={`${ selected === index ? 'active' : ''}`}
+              onClick={() => {setSelected(index); setShown(false)} }
+            >{item}</li>
+          )) }
         </ul>
-      </div>
+      </div>)}
     </div>
   )
 }
