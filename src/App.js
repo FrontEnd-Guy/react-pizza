@@ -1,18 +1,24 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import './scss/app.scss';
 import './App.css';
 import Header from './components/Header';
 import Categories from './components/Categories';
 import Sort from './components/Sort';
 import PizzaBlock from './components/PizzaBlock';
+import PizzaSkeleton from './components/PizzaBlock/PizzaSkeleton';
 
 function App() {
+  const [isLoading, setIsLoading] = React.useState(true);
   const [pizzas, setPizzas] = React.useState([]);
 
   React.useEffect(() => {
     fetch('https://651230b9b8c6ce52b39562a3.mockapi.io/pizzas')
       .then((res) => res.json())
-      .then((json) => setPizzas(json))
+      .then((arr) => {
+        setPizzas(arr);
+        setIsLoading(false);
+      })
     }, [])
   
 
@@ -27,9 +33,10 @@ function App() {
               </div>
               <h2 className="content__title">Все пиццы</h2>
               <div className="content__items">
-                 { pizzas.map((pizza) => (
-                  <PizzaBlock key={pizza.id}{...pizza}/>
-                 ))}
+              { isLoading 
+                  ? [...new Array(6)].map((_, index) => <PizzaSkeleton key={index} />)
+                  : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)
+              }
               </div>
             </div>
           </div>
