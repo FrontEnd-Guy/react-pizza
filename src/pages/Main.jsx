@@ -15,10 +15,11 @@ const Main = () => {
         setPizzas(arr);
         setIsLoading(false);
       });
+    window.scrollTo(0, 0);
   }, []);
 
   return (
-    <>
+    <div className="container">
       <div className="content__top">
         <Categories />
         <Sort />
@@ -29,7 +30,7 @@ const Main = () => {
           ? [...new Array(6)].map((_, index) => <PizzaSkeleton key={index} />)
           : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
       </div>
-    </>
+    </div>
   );
 };
 
