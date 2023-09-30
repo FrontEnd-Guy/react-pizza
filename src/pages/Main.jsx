@@ -1,27 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import PizzaSkeleton from '../components/PizzaBlock/PizzaSkeleton';
 
 const Main = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [pizzas, setPizzas] = React.useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [pizzas, setPizzas] = useState([]);
 
-  React.useEffect(() => {
-    fetch('https://651230b9b8c6ce52b39562a3.mockapi.io/pizzas')
+  const [categoryId, setCategoryId] = useState(0);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetch(`https://651230b9b8c6ce52b39562a3.mockapi.io/pizzas?category=${categoryId}`)
       .then((res) => res.json())
       .then((arr) => {
         setPizzas(arr);
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, []);
+  }, [categoryId]);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories />
+        <Categories activeCategory={categoryId} onChangeCategory={(i) => setCategoryId(i)} />
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
