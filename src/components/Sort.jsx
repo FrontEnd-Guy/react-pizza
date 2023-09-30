@@ -4,9 +4,11 @@ const Sort = ({ activeSort, onChangeSort }) => {
   const [shown, setShown] = React.useState(false);
 
   const sortList = [
-    { name: 'популярности', sortProperty: 'rating' },
-    { name: 'цене', sortProperty: 'price' },
-    { name: 'алфавиту', sortProperty: 'title' },
+    { name: 'Rating', sortProperty: 'rating' },
+    { name: 'Price: Low to High', sortProperty: '-price' },
+    { name: 'Price: High to Low', sortProperty: 'price' },
+    { name: 'Name: A-Z', sortProperty: '-title' },
+    { name: 'Name: Z-A', sortProperty: 'title' },
   ];
 
   return (
