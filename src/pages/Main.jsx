@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import PizzaSkeleton from '../components/PizzaBlock/PizzaSkeleton';
+import { SearchContext } from '../App';
 
 const Main = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,6 +14,8 @@ const Main = () => {
     name: 'Rating',
     sortProperty: 'rating',
   });
+
+  const { searchInput } = useContext(SearchContext);
 
   useEffect(() => {
     setIsLoading(true);
@@ -42,7 +45,9 @@ const Main = () => {
       <div className="content__items">
         {isLoading
           ? [...new Array(6)].map((_, index) => <PizzaSkeleton key={index} />)
-          : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
+          : pizzas
+              .filter((obj) => obj.title.toLowerCase().includes(searchInput))
+              .map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
       </div>
     </div>
   );
