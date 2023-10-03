@@ -4,12 +4,15 @@ import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import PizzaSkeleton from '../components/PizzaBlock/PizzaSkeleton';
 import { SearchContext } from '../App';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCategoryId } from '../redux/slices/filterSlice';
 
 const Main = () => {
+  const dispatch = useDispatch();
+  const categoryId = useSelector((state) => state.filter.categoryId);
+
   const [isLoading, setIsLoading] = useState(true);
   const [pizzas, setPizzas] = useState([]);
-
-  const [categoryId, setCategoryId] = useState(0);
   const [sortType, setSortType] = useState({
     name: 'Rating',
     sortProperty: 'rating',
@@ -38,7 +41,10 @@ const Main = () => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories activeCategory={categoryId} onChangeCategory={(i) => setCategoryId(i)} />
+        <Categories
+          activeCategory={categoryId}
+          onChangeCategory={(i) => dispatch(setCategoryId(i))}
+        />
         <Sort activeSort={sortType} onChangeSort={(i) => setSortType(i)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
