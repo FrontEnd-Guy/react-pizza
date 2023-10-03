@@ -9,14 +9,10 @@ import { setCategoryId } from '../redux/slices/filterSlice';
 
 const Main = () => {
   const dispatch = useDispatch();
-  const categoryId = useSelector((state) => state.filter.categoryId);
+  const { categoryId, sort } = useSelector((state) => state.filter);
 
   const [isLoading, setIsLoading] = useState(true);
   const [pizzas, setPizzas] = useState([]);
-  const [sortType, setSortType] = useState({
-    name: 'Rating',
-    sortProperty: 'rating',
-  });
 
   const { searchInput } = useContext(SearchContext);
 
@@ -24,8 +20,8 @@ const Main = () => {
     setIsLoading(true);
 
     const category = categoryId > 0 ? `category=${categoryId}` : '';
-    const sortBy = sortType.sortProperty.replace('-', '');
-    const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
+    const sortBy = sort.sortProperty.replace('-', '');
+    const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
 
     fetch(
       `https://651230b9b8c6ce52b39562a3.mockapi.io/pizzas?${category}&sortBy=${sortBy}&order=${order}`,
@@ -36,7 +32,7 @@ const Main = () => {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [categoryId, sortType]);
+  }, [categoryId, sort]);
 
   return (
     <div className="container">
@@ -45,7 +41,7 @@ const Main = () => {
           activeCategory={categoryId}
           onChangeCategory={(i) => dispatch(setCategoryId(i))}
         />
-        <Sort activeSort={sortType} onChangeSort={(i) => setSortType(i)} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
