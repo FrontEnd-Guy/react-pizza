@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
@@ -23,12 +24,12 @@ const Main = () => {
     const sortBy = sort.sortProperty.replace('-', '');
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
 
-    fetch(
-      `https://651230b9b8c6ce52b39562a3.mockapi.io/pizzas?${category}&sortBy=${sortBy}&order=${order}`,
-    )
-      .then((res) => res.json())
-      .then((arr) => {
-        setPizzas(arr);
+    axios
+      .get(
+        `https://651230b9b8c6ce52b39562a3.mockapi.io/pizzas?${category}&sortBy=${sortBy}&order=${order}`,
+      )
+      .then((res) => {
+        setPizzas(res.data);
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
