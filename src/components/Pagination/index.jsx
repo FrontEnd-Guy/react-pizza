@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Pagination = () => {
+const Pagination = ({ currentPage, onChangePage }) => {
   return <div>Pagination</div>;
 };
 
