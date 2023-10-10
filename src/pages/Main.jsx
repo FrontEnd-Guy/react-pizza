@@ -7,11 +7,11 @@ import PizzaSkeleton from '../components/PizzaBlock/PizzaSkeleton';
 import Pagination from '../components/Pagination';
 import { SearchContext } from '../App';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCategoryId, setPageCount } from '../redux/slices/filterSlice';
+import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice';
 
 const Main = () => {
   const dispatch = useDispatch();
-  const { categoryId, sort, pageCount } = useSelector((state) => state.filter);
+  const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
 
   const [isLoading, setIsLoading] = useState(true);
   const [pizzas, setPizzas] = useState([]);
@@ -28,14 +28,14 @@ const Main = () => {
 
     axios
       .get(
-        `https://651230b9b8c6ce52b39562a3.mockapi.io/pizzas?${category}${search}&sortBy=${sortBy}&order=${order}`,
+        `https://651230b9b8c6ce52b39562a3.mockapi.io/pizzas?page=${currentPage}&limit=4${category}${search}&sortBy=${sortBy}&order=${order}`,
       )
       .then((res) => {
         setPizzas(res.data);
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [categoryId, sort, searchInput]);
+  }, [categoryId, sort, searchInput, currentPage]);
 
   return (
     <div className="container">
@@ -52,7 +52,7 @@ const Main = () => {
           ? [...new Array(6)].map((_, index) => <PizzaSkeleton key={index} />)
           : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
       </div>
-      <Pagination currentPage={pageCount} onChangePage={(i) => dispatch(setPageCount(i))} />
+      <Pagination currentPage={currentPage} onChangePage={(i) => dispatch(setCurrentPage(i))} />
     </div>
   );
 };
