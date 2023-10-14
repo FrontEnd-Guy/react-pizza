@@ -14,8 +14,8 @@ import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filte
 const Main = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isSearch = useRef();
-  const isMounted = useRef();
+  const isSearch = useRef(false);
+  const isMounted = useRef(false);
 
   const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
 
@@ -83,6 +83,7 @@ const Main = () => {
 
     isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchInput, currentPage]);
+
   return (
     <div className="container">
       <div className="content__top">
