@@ -24,7 +24,7 @@ const Main = () => {
 
   const { searchInput } = useContext(SearchContext);
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true);
 
     const category = categoryId > 0 ? `category=${categoryId}` : '';
@@ -32,14 +32,17 @@ const Main = () => {
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
     const search = searchInput ? `&search=${searchInput}` : '';
 
-    axios
-      .get(
-        `https://651230b9b8c6ce52b39562a3.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}${search}&sortBy=${sortBy}&order=${order}`,
-      )
-      .then((res) => {
-        setPizzas(res.data);
-        setIsLoading(false);
-      });
+    try {
+      const res = await axios.get(
+        `https://-651230b9b8c6ce52b39562a3.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}${search}&sortBy=${sortBy}&order=${order}`,
+      );
+      setPizzas(res.data);
+    } catch (error) {
+      console.log(error);
+      alert('Failed to fetch pizzas');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Если изменили параметры и был первый рендер
