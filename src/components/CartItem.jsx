@@ -19,6 +19,8 @@ const CartItem = ({ id, title, price, imageUrl, type, size, count }) => {
     }
   };
 
+  if (count <= 0) return null;
+
   return (
     <div className="cart__item">
       <div className="cart__item-img">

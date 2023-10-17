@@ -8,8 +8,13 @@ import PizzaSkeleton from '../components/PizzaBlock/PizzaSkeleton';
 import Pagination from '../components/Pagination';
 import { SearchContext } from '../App';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-import { fetchPizzas } from '../redux/slices/pizzaSlice';
+import {
+  selectFilter,
+  setCategoryId,
+  setCurrentPage,
+  setFilters,
+} from '../redux/slices/filterSlice';
+import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -17,8 +22,8 @@ const Main = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const { items, status } = useSelector((state) => state.pizza);
-  const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
+  const { items, status } = useSelector(selectPizzaData);
+  const { categoryId, sort, currentPage } = useSelector(selectFilter);
 
   const { searchInput } = useContext(SearchContext);
 
@@ -92,7 +97,7 @@ const Main = () => {
       ) : (
         <div className="content__items">
           {status === 'loading'
-            ? [...new Array(6)].map((_, index) => <PizzaSkeleton key={index} />)
+            ? [...new Array(4)].map((_, index) => <PizzaSkeleton key={index} />)
             : items.map((item) => <PizzaBlock key={item.id} {...item} />)}
         </div>
       )}
