@@ -2,24 +2,23 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './scss/app.scss';
 import './App.css';
-import Header from './components/Header';
 import Main from './pages/Main';
 import Cart from './pages/Cart';
 import NotFound from './pages/NotFound';
+import FullPizza from './pages/FullPizza';
+import MainLayout from './layouts/MainLayout';
 
 function App() {
 
   return (
-    <div className="wrapper">
-        <Header/>
-        <div className="content">
-            <Routes>
-              <Route path='/' element={<Main/>} />
-              <Route path='/cart' element={<Cart/>} />
-              <Route path='*' element={<NotFound/>} />
-            </Routes>
-        </div>
-    </div>
+      <Routes>
+        <Route path='/' element={<MainLayout/>}>
+          <Route path='' element={<Main/>} />
+          <Route path='cart' element={<Cart/>} />
+          <Route path='pizzas/:id' element={<FullPizza />} />
+          <Route path='*' element={<NotFound/>} />
+        </Route>
+      </Routes>
   );
 }
 
