@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 import Categories from '../components/Categories';
@@ -6,7 +6,6 @@ import Sort, { sortList } from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import PizzaSkeleton from '../components/PizzaBlock/PizzaSkeleton';
 import Pagination from '../components/Pagination';
-import { SearchContext } from '../App';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectFilter,
@@ -25,13 +24,13 @@ const Main = () => {
   const { items, status } = useSelector(selectPizzaData);
   const { categoryId, sort, currentPage } = useSelector(selectFilter);
 
-  const { searchInput } = useContext(SearchContext);
+  const { searchValue } = useSelector((state) => state.filter);
 
   const getPizzas = async () => {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const sortBy = sort.sortProperty.replace('-', '');
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
-    const search = searchInput ? `&search=${searchInput}` : '';
+    const search = searchValue ? `&search=${searchValue}` : '';
 
     dispatch(fetchPizzas({ category, sortBy, order, search, currentPage }));
   };
@@ -77,7 +76,7 @@ const Main = () => {
     }
 
     isSearch.current = false;
-  }, [categoryId, sort.sortProperty, searchInput, currentPage]);
+  }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
   return (
     <div className="container">
