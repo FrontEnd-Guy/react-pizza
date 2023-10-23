@@ -15,16 +15,14 @@ import {
 } from '../redux/slices/filterSlice';
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
 
-const Main = () => {
+const Main: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
   const { items, status } = useSelector(selectPizzaData);
-  const { categoryId, sort, currentPage } = useSelector(selectFilter);
-
-  const { searchValue } = useSelector((state) => state.filter);
+  const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
 
   const getPizzas = async () => {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
@@ -32,7 +30,9 @@ const Main = () => {
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    dispatch(fetchPizzas({ category, sortBy, order, search, currentPage }));
+    dispatch(
+      // @ts-ignore
+      fetchPizzas({ category, sortBy, order, search, currentPage }));
   };
 
   // Если изменили параметры и был первый рендер
@@ -83,7 +83,7 @@ const Main = () => {
       <div className="content__top">
         <Categories
           activeCategory={categoryId}
-          onChangeCategory={(i) => dispatch(setCategoryId(i))}
+          onChangeCategory={(i: number) => dispatch(setCategoryId(i))}
         />
         <Sort />
       </div>
@@ -97,7 +97,7 @@ const Main = () => {
         <div className="content__items">
           {status === 'loading'
             ? [...new Array(4)].map((_, index) => <PizzaSkeleton key={index} />)
-            : items.map((item) => (
+            : items.map((item: any) => (
                 <Link to={`/pizzas/${item.id}`} key={item.id}>
                   <PizzaBlock {...item} />
                 </Link>
@@ -105,7 +105,7 @@ const Main = () => {
         </div>
       )}
 
-      <Pagination currentPage={currentPage} onChangePage={(i) => dispatch(setCurrentPage(i))} />
+      <Pagination currentPage={currentPage} onChangePage={(i: number) => dispatch(setCurrentPage(i))} />
     </div>
   );
 };
