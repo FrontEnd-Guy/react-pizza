@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 import Categories from '../components/Categories';
 import Sort, { sortList } from '../components/Sort';
@@ -97,15 +97,11 @@ const Main: React.FC = () => {
         <div className="content__items">
           {status === 'loading'
             ? [...new Array(4)].map((_, index) => <PizzaSkeleton key={index} />)
-            : items.map((item: any) => (
-                <Link to={`/pizzas/${item.id}`} key={item.id}>
-                  <PizzaBlock {...item} />
-                </Link>
-              ))}
+            : items.map((item: any) => (<PizzaBlock key={item.id} {...item} />))}
         </div>
       )}
 
-      <Pagination currentPage={currentPage} onChangePage={(i: number) => dispatch(setCurrentPage(i))} />
+      <Pagination currentPage={currentPage} onChangePage={(page: number) => dispatch(setCurrentPage(page))} />
     </div>
   );
 };

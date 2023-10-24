@@ -24,8 +24,8 @@ const Sort: React.FC = () => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    const handleOutsideClick = (event: any) => {
-      if (sortRef.current && !sortRef.current.contains(event.target)) {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
         setShown(false);
       }
     };
@@ -34,7 +34,7 @@ const Sort: React.FC = () => {
     return () => {
       document.body.removeEventListener('click', handleOutsideClick);
     };
-  }, []);
+}, []);
 
   return (
     <div ref={sortRef} className="sort">
